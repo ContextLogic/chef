@@ -304,6 +304,10 @@ func (ac AuthConfig) SignRequest(request *http.Request) error {
 	for index, value := range base64sig {
 		request.Header.Set(fmt.Sprintf("X-Ops-Authorization-%d", index+1), string(value))
 	}
+	
+	// Do not really need Hashed Path in the header.
+	// Get rid of it in order to avoid net/http complaining about invalid header field
+	request.Header.Del("Hashed Path")
 
 	return nil
 }
